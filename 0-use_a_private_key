@@ -1,0 +1,4 @@
+#!/usr/bin/bash env
+""" Script To Find Privte Key """
+
+ssh -i ~/.ssh/school ubuntu@3.95.228.149
