@@ -1,30 +1,29 @@
 #!/usr/bin/python3
-"""Uses a REST API to retrieve information,
-for a given employee ID, returns information about
-his/her TODO list progress."""
-from os import sys
-import requests
+"""
+Python Script for Question 0
+"""
 
 
-if __name__ == "__main__":
-        user_id = sys.argv[1]
-            id = int(user_id)
-                user = requests.get("https://jsonplaceholder.typicode.com/users/{}"
-                                                .format(id))
-                    name = user.json().get("name")
-                        todos = requests.get("https://jsonplaceholder.typicode.com/todos")
+def get_todo():
+    import requests
+    from sys import argv
+    id = argv[1]
+    user = requests.get("https://jsonplaceholder.typicode.com/users/{}".
+                        format(id)).json()
 
-                            all = 0
-                                complete = 0
+    toDo = requests.get("https://jsonplaceholder.typicode.com/todos?userId={}".
+                        format(id)).json()
 
-                                    for k in todos.json():
-                                                if k.get('userId') is id:
-                                                                all += 1
-                                                                        if k.get('userId') is id and k.get('completed') is True:
-                                                                                        complete += 1
+    completedTask = []
 
-                                                                                            print("Employee {} is done with tasks({}/{}):".format(name, complete, all))
+    for task in toDo:
+        if task.get("completed") is True:
+            completedTask.append(task.get("title"))
+    print("Employee {} is done with tasks({}/{}):"
+          .format(user.get('name'), len(completedTask), len(toDo)))
+    for task in completedTask:
+        print("\t {}".format(task))
 
-                                                                                                for k in todos.json():
-                                                                                                            if k.get('userId') is id and k.get('completed') is True:
-                                                                                                                            print("\t {}".format(k.get('title')))
+
+if __name__ == '__main__':
+    get_todo()
